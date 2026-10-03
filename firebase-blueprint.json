@@ -1,0 +1,130 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Student profile containing university registration and enrollment details.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "firstName": { "type": "string", "maxLength": 100 },
+        "lastName": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "studentRegNumber": { "type": "string", "maxLength": 30 },
+        "programme": { "type": "string", "maxLength": 150 },
+        "yearOfStudy": { "type": "number" },
+        "gender": { "type": "string", "maxLength": 50 },
+        "phoneNumber": { "type": "string", "maxLength": 30 },
+        "campus": { "type": "string", "maxLength": 150 },
+        "isHitVerified": { "type": "boolean" },
+        "isPremium": { "type": "boolean" },
+        "subscriptionTier": { "type": "string", "enum": ["free", "plus"] },
+        "role": { "type": "string", "enum": ["student", "admin"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "firstName", "lastName", "email", "studentRegNumber", "role"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Student income or expense record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["expense", "income"] },
+        "amount": { "type": "number" },
+        "category": { "type": "string", "maxLength": 100 },
+        "merchant": { "type": "string", "maxLength": 200 },
+        "date": { "type": "string", "maxLength": 20 },
+        "paymentMethod": { "type": "string", "enum": ["Cash", "EcoCash", "Bank", "Card", "Other"] },
+        "notes": { "type": "string", "maxLength": 500 },
+        "isRecurring": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "type", "amount", "category", "merchant", "date", "paymentMethod"]
+    },
+    "SavingsGoal": {
+      "title": "SavingsGoal",
+      "description": "Student savings target.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 150 },
+        "targetAmount": { "type": "number" },
+        "currentAmount": { "type": "number" },
+        "targetDate": { "type": "string", "maxLength": 20 },
+        "category": { "type": "string", "maxLength": 100 },
+        "contributionFrequency": { "type": "string", "enum": ["weekly", "monthly", "irregular"] },
+        "status": { "type": "string", "enum": ["active", "completed", "paused"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "name", "targetAmount", "currentAmount", "targetDate", "status"]
+    },
+    "SemesterPlan": {
+      "title": "SemesterPlan",
+      "description": "Academic semester budget plan.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "semesterName": { "type": "string", "maxLength": 150 },
+        "startDate": { "type": "string", "maxLength": 20 },
+        "endDate": { "type": "string", "maxLength": 20 },
+        "expectedIncome": { "type": "number" },
+        "fees": { "type": "number" },
+        "accommodation": { "type": "number" },
+        "transportBudget": { "type": "number" },
+        "foodBudget": { "type": "number" },
+        "academicCosts": { "type": "number" },
+        "airtimeData": { "type": "number" },
+        "otherCosts": { "type": "number" },
+        "savingsTarget": { "type": "number" }
+      },
+      "required": ["id", "userId", "semesterName", "startDate", "endDate"]
+    },
+    "PartnerDeal": {
+      "title": "PartnerDeal",
+      "description": "Student discount offer from campus business partners.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessName": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string", "maxLength": 100 },
+        "title": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "discount": { "type": "string", "maxLength": 50 },
+        "offerCode": { "type": "string", "maxLength": 50 },
+        "location": { "type": "string", "maxLength": 200 },
+        "contact": { "type": "string", "maxLength": 100 },
+        "expiryDate": { "type": "string", "maxLength": 20 },
+        "featured": { "type": "boolean" },
+        "sponsored": { "type": "boolean" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["id", "businessName", "title", "discount", "offerCode", "active"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Student user profile information."
+    },
+    "/users/{userId}/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "User transactions (expenses and income)."
+    },
+    "/users/{userId}/goals/{goalId}": {
+      "schema": "SavingsGoal",
+      "description": "User savings goals."
+    },
+    "/users/{userId}/semester_plans/{planId}": {
+      "schema": "SemesterPlan",
+      "description": "User semester plan and runway parameters."
+    },
+    "/partner_deals/{dealId}": {
+      "schema": "PartnerDeal",
+      "description": "Available campus student partner offers."
+    }
+  }
+}

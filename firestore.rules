@@ -1,0 +1,74 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Default-Deny Catch-All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == "tawanagbosha@gmail.com" ||
+        (request.auth.token.email != null && request.auth.token.email.matches('.*admin.*'))
+      );
+    }
+
+    // 2. User Profiles
+    match /users/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isOwner(userId) || isAdmin();
+
+      // Transactions sub-collection
+      match /transactions/{transactionId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Savings Goals sub-collection
+      match /goals/{goalId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Semester Plans sub-collection
+      match /semester_plans/{planId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Budgets sub-collection
+      match /budgets/{budgetId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Recurring obligations sub-collection
+      match /recurring/{recurringId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // 3. Partner Deals collection
+    match /partner_deals/{dealId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // 4. Connection health check for boot validation
+    match /test/{docId} {
+      allow read: if true;
+    }
+  }
+}

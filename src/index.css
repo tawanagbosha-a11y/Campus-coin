@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Theme: Harare Institute of Technology institutional blue + golden yellow */
+  --brand-blue-deep: #0a1f44;
+  --brand-blue: #0f2e69;
+  --brand-blue-accent: #1a4494;
+  --brand-blue-subtle: #eff4fc;
+  
+  --brand-gold: #f59e0b;
+  --brand-gold-hover: #d97706;
+  --brand-gold-deep: #b45309;
+  --brand-gold-subtle: #fef3c7;
+  --brand-gold-glow: rgba(245, 158, 11, 0.15);
+
+  --surface-bg: #f8fafc;
+  --surface-card: #ffffff;
+  --surface-border: #e2e8f0;
+  --surface-border-subtle: #f1f5f9;
+
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+
+  --status-success: #10b981;
+  --status-warning: #f59e0b;
+  --status-danger: #ef4444;
+  --status-info: #3b82f6;
+
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--surface-bg);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Smooth transitions */
+.transition-smooth {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
